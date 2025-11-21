@@ -2,6 +2,7 @@ declare module '@env' {
   export const API_URL: string;
   export const API_KEY: string;
   export const API_TIMEOUT: string;
+  export const AUTH_API_URL: string;
   export const NODE_ENV: string;
   export const APP_ENV: string;
   export const JWT_SECRET: string;
