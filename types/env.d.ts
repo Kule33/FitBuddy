@@ -1,0 +1,23 @@
+declare module '@env' {
+  export const API_URL: string;
+  export const API_KEY: string;
+  export const API_TIMEOUT: string;
+  export const NODE_ENV: string;
+  export const APP_ENV: string;
+  export const JWT_SECRET: string;
+  export const AUTH_DOMAIN: string;
+  export const FIREBASE_API_KEY: string;
+  export const FIREBASE_AUTH_DOMAIN: string;
+  export const FIREBASE_PROJECT_ID: string;
+  export const FIREBASE_STORAGE_BUCKET: string;
+  export const FIREBASE_MESSAGING_SENDER_ID: string;
+  export const FIREBASE_APP_ID: string;
+  export const GOOGLE_CLIENT_ID: string;
+  export const GOOGLE_CLIENT_SECRET: string;
+  export const ENABLE_ANALYTICS: string;
+  export const ENABLE_PUSH_NOTIFICATIONS: string;
+  export const ENABLE_OFFLINE_MODE: string;
+  export const APP_VERSION: string;
+  export const MIN_PASSWORD_LENGTH: string;
+  export const SESSION_TIMEOUT: string;
+}
