@@ -41,11 +41,13 @@ export default function FavouritesScreen() {
   };
 
   const renderHeader = () => (
-    <View style={styles.header}>
-      <Text style={styles.title}>Favourites</Text>
-      <Text style={styles.subtitle}>
-        {favourites.length} {favourites.length === 1 ? 'exercise' : 'exercises'} saved
-      </Text>
+    <View style={styles.headerContainer}>
+      <View style={styles.headerSection}>
+        <Text style={styles.title}>Favourites</Text>
+        <Text style={styles.subtitle}>
+          {favourites.length} {favourites.length === 1 ? 'exercise' : 'exercises'} saved
+        </Text>
+      </View>
     </View>
   );
 
@@ -99,18 +101,30 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     padding: 16,
   },
-  header: {
+  headerContainer: {
     marginBottom: 20,
+    marginHorizontal: -16,
+    marginTop: -16,
+    backgroundColor: '#007AFF',
+    padding: 16,
+    paddingTop: 50,
+    paddingBottom: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: '#0051D5',
+  },
+  headerSection: {
+    flexDirection: 'column',
   },
   title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: '#333',
+    fontSize: 28,
+    fontWeight: '700',
+    color: '#FFFFFF',
     marginBottom: 4,
+    letterSpacing: 0.3,
   },
   subtitle: {
-    fontSize: 16,
-    color: '#666',
+    fontSize: 14,
+    color: 'rgba(255, 255, 255, 0.9)',
   },
   emptyState: {
     flex: 1,

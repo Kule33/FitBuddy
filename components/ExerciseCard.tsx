@@ -29,8 +29,69 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
     }
   };
 
+  const getExerciseIcon = (muscle: string, type: string) => {
+    // Use muscle group for more variety - match exact API muscle names
+    const normalizedMuscle = muscle.toLowerCase().replace(/[_\s-]/g, '');
+    
+    // Map available exercises to the beautiful icons
+    if (normalizedMuscle === 'shoulders') {
+      return 'sunrise';  // 🌅
+    }
+    if (normalizedMuscle === 'quadriceps' || normalizedMuscle === 'hamstrings') {
+      return 'move';  // 🚶
+    }
+    if (normalizedMuscle === 'biceps') {
+      return 'arrow-up-circle';  // ⬆️
+    }
+    if (normalizedMuscle === 'abdominals' || normalizedMuscle === 'abductors' || normalizedMuscle === 'adductors') {
+      return 'grid';  // ⊞
+    }
+    if (normalizedMuscle === 'forearms') {
+      return 'battery';  // 🔋
+    }
+    if (normalizedMuscle === 'lats' || normalizedMuscle === 'middleback' || normalizedMuscle === 'lowerback') {
+      return 'heart';  // ❤️ (using heart for back/lats)
+    }
+    if (normalizedMuscle === 'triceps') {
+      return 'arrow-down-circle';  // ⬇️
+    }
+    if (normalizedMuscle === 'calves') {
+      return 'circle';  // ⚪
+    }
+    if (normalizedMuscle === 'glutes') {
+      return 'user';  // 👤
+    }
+    if (normalizedMuscle === 'chest') {
+      return 'shield';  // 🛡️
+    }
+    if (normalizedMuscle === 'traps' || normalizedMuscle === 'neck') {
+      return 'aperture';
+    }
+    
+    // Default - use trending-up for strength/general exercises
+    return 'trending-up';
+  };
+
+  const getMuscleColor = (muscle: string) => {
+    const colors = [
+      '#007AFF', '#FF3B30', '#34C759', '#FF9500', 
+      '#AF52DE', '#FF2D55', '#5AC8FA', '#FFCC00'
+    ];
+    const index = muscle.length % colors.length;
+    return colors[index];
+  };
+
   return (
     <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.7}>
+      {/* Exercise Icon/Image */}
+      <View style={[styles.imageContainer, { backgroundColor: getMuscleColor(exercise.muscle) + '20' }]}>
+        <Feather 
+          name={getExerciseIcon(exercise.muscle, exercise.type)} 
+          size={32} 
+          color={getMuscleColor(exercise.muscle)} 
+        />
+      </View>
+
       <View style={styles.content}>
         {/* Header */}
         <View style={styles.header}>
@@ -55,12 +116,11 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
               style={styles.favoriteButton}
               hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
             >
-              <Feather
-                name="heart"
-                size={24}
-                color={isFavorite ? '#FF3B30' : '#CCC'}
-                fill={isFavorite ? '#FF3B30' : 'none'}
-              />
+              {isFavorite ? (
+                <Feather name="heart" size={24} color="#FF3B30" fill="#FF3B30" />
+              ) : (
+                <Feather name="heart" size={24} color="#CCC" />
+              )}
             </TouchableOpacity>
           )}
         </View>
@@ -93,18 +153,25 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
 const styles = StyleSheet.create({
   card: {
     backgroundColor: '#FFF',
-    borderRadius: 12,
+    borderRadius: 20,
     padding: 16,
-    marginBottom: 12,
+    marginBottom: 16,
     flexDirection: 'row',
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 4,
-    elevation: 2,
-    borderWidth: 1,
-    borderColor: '#F0F0F0',
+    shadowColor: '#007AFF',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 12,
+    elevation: 5,
+    borderWidth: 0,
+  },
+  imageContainer: {
+    width: 70,
+    height: 70,
+    borderRadius: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 14,
   },
   content: {
     flex: 1,
@@ -113,17 +180,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    marginBottom: 12,
+    marginBottom: 10,
   },
   headerLeft: {
     flex: 1,
     marginRight: 8,
   },
   name: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#333',
-    marginBottom: 6,
+    fontSize: 17,
+    fontWeight: '700',
+    color: '#1A1A1A',
+    marginBottom: 8,
+    letterSpacing: 0.2,
   },
   badges: {
     flexDirection: 'row',
@@ -131,15 +199,16 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   badge: {
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 6,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 8,
   },
   badgeText: {
     fontSize: 11,
-    fontWeight: '600',
+    fontWeight: '700',
     color: '#FFF',
     textTransform: 'capitalize',
+    letterSpacing: 0.3,
   },
   favoriteButton: {
     padding: 4,
@@ -147,17 +216,22 @@ const styles = StyleSheet.create({
   details: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 12,
+    gap: 14,
   },
   detailItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
+    gap: 5,
+    backgroundColor: '#F8F9FA',
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 8,
   },
   detailText: {
     fontSize: 13,
     color: '#666',
     textTransform: 'capitalize',
+    fontWeight: '500',
   },
   arrow: {
     marginLeft: 8,

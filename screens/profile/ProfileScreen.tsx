@@ -62,28 +62,19 @@ export default function ProfileScreen() {
     );
   };
 
-  const getInitials = (name: string) => {
-    return name
-      .split(' ')
-      .map((n) => n[0])
-      .join('')
-      .toUpperCase()
-      .slice(0, 2);
-  };
-
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       {/* Profile Header */}
-      <View style={styles.header}>
-        <View style={styles.avatarContainer}>
-          <View style={styles.avatar}>
-            <Text style={styles.avatarText}>
-              {user?.name ? getInitials(user.name) : 'U'}
-            </Text>
+      <View style={styles.headerBackground}>
+        <View style={styles.header}>
+          <View style={styles.avatarContainer}>
+            <View style={styles.avatar}>
+              <Feather name="user" size={48} color="#FFF" />
+            </View>
           </View>
+          <Text style={styles.name}>{user?.name || 'Guest'}</Text>
+          <Text style={styles.email}>{user?.email || 'No email'}</Text>
         </View>
-        <Text style={styles.name}>{user?.name || 'Guest'}</Text>
-        <Text style={styles.email}>{user?.email || 'No email'}</Text>
       </View>
 
       {/* Stats */}
@@ -227,24 +218,33 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F8F9FA',
   },
+  headerBackground: {
+    backgroundColor: '#007AFF',
+    paddingBottom: 30,
+  },
   header: {
     alignItems: 'center',
-    paddingVertical: 40,
+    paddingVertical: 30,
     paddingHorizontal: 20,
-    backgroundColor: '#FFF',
-    borderBottomWidth: 1,
-    borderBottomColor: '#E0E0E0',
+    paddingTop: 50,
   },
   avatarContainer: {
     marginBottom: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+    elevation: 5,
   },
   avatar: {
     width: 100,
     height: 100,
     borderRadius: 50,
-    backgroundColor: '#007AFF',
+    backgroundColor: 'rgba(255, 255, 255, 0.25)',
     alignItems: 'center',
     justifyContent: 'center',
+    borderWidth: 3,
+    borderColor: 'rgba(255, 255, 255, 0.4)',
   },
   avatarText: {
     fontSize: 36,
@@ -254,12 +254,12 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#333',
+    color: '#FFFFFF',
     marginBottom: 4,
   },
   email: {
     fontSize: 16,
-    color: '#666',
+    color: 'rgba(255, 255, 255, 0.9)',
   },
   statsContainer: {
     flexDirection: 'row',

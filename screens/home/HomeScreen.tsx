@@ -41,9 +41,59 @@ export default function HomeScreen() {
   const fetchExercises = useCallback(async () => {
     try {
       setError(null);
-      const data = await exerciseService.getExercises({ muscle: 'biceps' });
-      setExercises(data);
-      setFilteredExercises(data);
+      // Fetch exercises for specific muscle groups that have beautiful icons
+      // Based on API availability: shoulders, quadriceps, biceps, abdominals, forearms, lats
+      const muscleGroups = [
+        'shoulders',  // sunrise icon ✓
+        'quadriceps', // move icon ✓
+        'biceps',     // arrow-up-circle ✓
+        'abdominals', // grid icon ✓
+        'forearms',   // aperture icon ✓
+        'lats',       // shield icon ✓
+        'triceps',    // arrow-down-circle
+        'calves',     // battery icon
+        'glutes',     // circle icon
+      ];
+      
+      const exercisePromises = muscleGroups.map(muscle => 
+        exerciseService.getExercises({ muscle, offset: 0 })
+      );
+      
+      const results = await Promise.all(exercisePromises);
+      
+      // Log what we got for each muscle
+      results.forEach((exercises, index) => {
+        console.log(`${muscleGroups[index]}: ${exercises.length} exercises`);
+        if (exercises.length > 0) {
+          console.log(`  - First: ${exercises[0].name} (${exercises[0].muscle})`);
+          if (exercises.length > 1) {
+            console.log(`  - Second: ${exercises[1].name} (${exercises[1].muscle})`);
+          }
+        }
+      });
+      
+      // Remove duplicates and take first 3 per muscle group for variety
+      const uniqueExercises: Exercise[] = [];
+      const seenNames = new Set<string>();
+      
+      results.forEach(muscleExercises => {
+        let count = 0;
+        for (const exercise of muscleExercises) {
+          if (!seenNames.has(exercise.name) && count < 3) {
+            uniqueExercises.push(exercise);
+            seenNames.add(exercise.name);
+            count++;
+          }
+        }
+      });
+      
+      // Shuffle the exercises to mix up the icons
+      const shuffledExercises = uniqueExercises.sort(() => Math.random() - 0.5);
+      
+      console.log(`Total unique exercises: ${shuffledExercises.length}`);
+      
+      setExercises(shuffledExercises);
+      setFilteredExercises(shuffledExercises);
     } catch (err: any) {
       setError(err.message || 'Failed to fetch exercises');
       Alert.alert('Error', 'Failed to load exercises. Please try again.');
@@ -111,14 +161,21 @@ export default function HomeScreen() {
   };
 
   const renderHeader = () => (
-    <View style={styles.header}>
-      <View>
-        <Text style={styles.greeting}>Hello, {user?.name || 'Guest'}! 👋</Text>
-        <Text style={styles.subtitle}>Let's start your workout</Text>
+    <View style={styles.headerContainer}>
+      <View style={styles.header}>
+        <View style={styles.headerLeft}>
+          <View style={styles.avatarCircle}>
+            <Feather name="user" size={22} color="#007AFF" />
+          </View>
+          <View style={styles.headerTextContainer}>
+            <Text style={styles.greeting}>Hello, {user?.name || 'Guest'}! 👋</Text>
+            <Text style={styles.subtitle}>Let&apos;s crush your goals today</Text>
+          </View>
+        </View>
+        <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
+          <Feather name="log-out" size={20} color="#FFF" />
+        </TouchableOpacity>
       </View>
-      <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
-        <Feather name="log-out" size={22} color="#FF3B30" />
-      </TouchableOpacity>
     </View>
   );
 
@@ -216,24 +273,53 @@ const styles = StyleSheet.create({
   listContent: {
     padding: 16,
   },
+  headerContainer: {
+    marginBottom: 20,
+    marginHorizontal: -16,
+    marginTop: -16,
+  },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 20,
+    padding: 16,
+    paddingTop: 50,
+    paddingBottom: 20,
+    backgroundColor: '#007AFF',
+    borderBottomWidth: 1,
+    borderBottomColor: '#0051D5',
+  },
+  headerLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  avatarCircle: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: '#FFFFFF',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12,
+  },
+  headerTextContainer: {
+    flex: 1,
   },
   greeting: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#333',
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#FFFFFF',
+    marginBottom: 2,
   },
   subtitle: {
-    fontSize: 14,
-    color: '#666',
-    marginTop: 4,
+    fontSize: 13,
+    color: 'rgba(255, 255, 255, 0.9)',
   },
   logoutButton: {
     padding: 8,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    borderRadius: 8,
   },
   searchContainer: {
     flexDirection: 'row',
