@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Alert,
+  Switch,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -148,19 +149,19 @@ export default function ProfileScreen() {
 
           <View style={[styles.menuDivider, { backgroundColor: colors.border }]} />
 
-          <TouchableOpacity
-            style={styles.menuItem}
-            onPress={handleDarkModeToggle}
-          >
+          <View style={styles.menuItem}>
             <View style={styles.menuItemLeft}>
               <MaterialCommunityIcons name="moon-waning-crescent" size={22} color={colors.primary} />
               <Text style={[styles.menuItemText, { color: colors.text }]}>Dark Mode</Text>
             </View>
-            <View style={{flexDirection: 'row', alignItems: 'center', gap: 8}}>
-              <Text style={[styles.menuItemText, { color: colors.textTertiary, fontSize: 14 }]}>{theme === 'dark' ? 'On' : 'Off'}</Text>
-              <MaterialCommunityIcons name="chevron-right" size={22} color={colors.iconTertiary} />
-            </View>
-          </TouchableOpacity>
+            <Switch
+              value={theme === 'dark'}
+              onValueChange={toggleTheme}
+              trackColor={{ false: colors.border, true: colors.primary }}
+              thumbColor="#FFFFFF"
+              ios_backgroundColor={colors.border}
+            />
+          </View>
         </View>
       </View>
 
