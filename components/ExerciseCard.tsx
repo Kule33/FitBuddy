@@ -163,7 +163,8 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
               style={styles.favoriteButton}
               hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
             >
-              <Animated.View style={{ transform: [{ scale: heartScale }] }}>\n                <MaterialCommunityIcons
+              <Animated.View style={{ transform: [{ scale: heartScale }] }}>
+                <MaterialCommunityIcons
                   name={isFavorite ? 'heart' : 'heart-outline'}
                   size={26}
                   color={isFavorite ? colors.error : colors.iconTertiary}
