@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { Feather } from '@expo/vector-icons';
+import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 import { Exercise } from '@/types';
 
 interface ExerciseCardProps {
@@ -33,43 +33,43 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
     // Use muscle group for more variety - match exact API muscle names
     const normalizedMuscle = muscle.toLowerCase().replace(/[_\s-]/g, '');
     
-    // Map available exercises to the beautiful icons
+    // Map available exercises to fitness-specific MaterialCommunityIcons
     if (normalizedMuscle === 'shoulders') {
-      return 'sunrise';  // 🌅
+      return 'weight-lifter';  // 🏋️ Weight lifter
     }
     if (normalizedMuscle === 'quadriceps' || normalizedMuscle === 'hamstrings') {
-      return 'move';  // 🚶
+      return 'run';  // 🏃 Running person
     }
     if (normalizedMuscle === 'biceps') {
-      return 'arrow-up-circle';  // ⬆️
+      return 'arm-flex';  // 💪 Flexed arm
     }
     if (normalizedMuscle === 'abdominals' || normalizedMuscle === 'abductors' || normalizedMuscle === 'adductors') {
-      return 'grid';  // ⊞
+      return 'yoga';  // 🧘 Yoga/core
     }
     if (normalizedMuscle === 'forearms') {
-      return 'battery';  // 🔋
+      return 'hand-back-right';  // ✋ Hand/forearm
     }
     if (normalizedMuscle === 'lats' || normalizedMuscle === 'middleback' || normalizedMuscle === 'lowerback') {
-      return 'heart';  // ❤️ (using heart for back/lats)
+      return 'human-handsup';  // 🙆 Back stretch
     }
     if (normalizedMuscle === 'triceps') {
-      return 'arrow-down-circle';  // ⬇️
+      return 'arm-flex-outline';  // 💪 Outlined arm
     }
     if (normalizedMuscle === 'calves') {
-      return 'circle';  // ⚪
+      return 'walk';  // 🚶 Walking
     }
     if (normalizedMuscle === 'glutes') {
-      return 'user';  // 👤
+      return 'seat';  // 🪑 Glutes/seat
     }
     if (normalizedMuscle === 'chest') {
-      return 'shield';  // 🛡️
+      return 'weight';  // 🏋️ Weight
     }
     if (normalizedMuscle === 'traps' || normalizedMuscle === 'neck') {
-      return 'aperture';
+      return 'neck';
     }
     
-    // Default - use trending-up for strength/general exercises
-    return 'trending-up';
+    // Default - use dumbbell for strength/general exercises
+    return 'dumbbell';
   };
 
   const getMuscleColor = (muscle: string) => {
@@ -85,9 +85,9 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
     <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.7}>
       {/* Exercise Icon/Image */}
       <View style={[styles.imageContainer, { backgroundColor: getMuscleColor(exercise.muscle) + '20' }]}>
-        <Feather 
-          name={getExerciseIcon(exercise.muscle, exercise.type)} 
-          size={32} 
+        <MaterialCommunityIcons 
+          name={getExerciseIcon(exercise.muscle, exercise.type) as any}
+          size={36} 
           color={getMuscleColor(exercise.muscle)} 
         />
       </View>
@@ -116,11 +116,11 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
               style={styles.favoriteButton}
               hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
             >
-              {isFavorite ? (
-                <Feather name="heart" size={24} color="#FF3B30" fill="#FF3B30" />
-              ) : (
-                <Feather name="heart" size={24} color="#CCC" />
-              )}
+              <MaterialCommunityIcons
+                name={isFavorite ? 'heart' : 'heart-outline'}
+                size={26}
+                color={isFavorite ? '#FF3B30' : '#CCC'}
+              />
             </TouchableOpacity>
           )}
         </View>
