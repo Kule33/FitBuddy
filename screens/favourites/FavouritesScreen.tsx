@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   FlatList,
   TouchableOpacity,
+  Animated,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -12,11 +13,14 @@ import { ExerciseCard } from '@/components/ExerciseCard';
 import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
 import { toggleFavourite, saveFavourites, loadFavourites } from '@/store/slices/favouritesSlice';
 import { Exercise } from '@/types';
+import { useTheme } from '@/contexts/ThemeContext';
 
 export default function FavouritesScreen() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { items: favourites, isLoading } = useAppSelector((state) => state.favourites);
+  const buttonScale = useRef(new Animated.Value(1)).current;
+  const { colors } = useTheme();
 
   // Load favourites on mount
   useEffect(() => {
@@ -41,10 +45,10 @@ export default function FavouritesScreen() {
   };
 
   const renderHeader = () => (
-    <View style={styles.headerContainer}>
+    <View style={[styles.headerContainer, { backgroundColor: colors.card, shadowColor: colors.shadow }]}>
       <View style={styles.headerSection}>
-        <Text style={styles.title}>Favourites</Text>
-        <Text style={styles.subtitle}>
+        <Text style={[styles.title, { color: colors.text }]}>Favourites</Text>
+        <Text style={[styles.subtitle, { color: colors.textSecondary }]}>
           {favourites.length} {favourites.length === 1 ? 'exercise' : 'exercises'} saved
         </Text>
       </View>
@@ -53,25 +57,43 @@ export default function FavouritesScreen() {
 
   const renderEmptyState = () => (
     <View style={styles.emptyState}>
-      <View style={styles.emptyIconContainer}>
-        <MaterialCommunityIcons name="heart-outline" size={64} color="#E0E0E0" />
+      <View style={[styles.emptyIconContainer, { backgroundColor: colors.primaryLight }]}>
+        <MaterialCommunityIcons name="heart-outline" size={64} color={colors.iconTertiary} />
       </View>
-      <Text style={styles.emptyTitle}>No Favourites Yet</Text>
-      <Text style={styles.emptyText}>
+      <Text style={[styles.emptyTitle, { color: colors.text }]}>No Favourites Yet</Text>
+      <Text style={[styles.emptyText, { color: colors.textSecondary }]}>
         Start adding exercises to your favourites by tapping the heart icon
       </Text>
       <TouchableOpacity
-        style={styles.browseButton}
         onPress={handleBrowseExercises}
+        onPressIn={() => {
+          Animated.spring(buttonScale, {
+            toValue: 0.95,
+            useNativeDriver: true,
+            tension: 100,
+            friction: 8,
+          }).start();
+        }}
+        onPressOut={() => {
+          Animated.spring(buttonScale, {
+            toValue: 1,
+            useNativeDriver: true,
+            tension: 100,
+            friction: 8,
+          }).start();
+        }}
+        activeOpacity={1}
       >
-        <MaterialCommunityIcons name="dumbbell" size={22} color="#FFF" />
-        <Text style={styles.browseButtonText}>Browse Exercises</Text>
+        <Animated.View style={[styles.browseButton, { backgroundColor: colors.primary, shadowColor: colors.primary, transform: [{ scale: buttonScale }] }]}>
+          <MaterialCommunityIcons name="dumbbell" size={22} color="#FFF" />
+          <Text style={styles.browseButtonText}>Browse Exercises</Text>
+        </Animated.View>
       </TouchableOpacity>
     </View>
   );
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
       <FlatList
         data={favourites}
         keyExtractor={(item) => item.id}
@@ -95,7 +117,6 @@ export default function FavouritesScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8F9FA',
   },
   listContent: {
     flexGrow: 1,
@@ -105,11 +126,9 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     marginHorizontal: -16,
     marginTop: -16,
-    backgroundColor: '#FFFFFF',
     padding: 16,
     paddingTop: 50,
     paddingBottom: 24,
-    shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.06,
     shadowRadius: 12,
@@ -121,13 +140,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 30,
     fontWeight: '700',
-    color: '#1A1A1A',
     marginBottom: 5,
     letterSpacing: -0.5,
   },
   subtitle: {
     fontSize: 15,
-    color: '#666',
     fontWeight: '500',
   },
   emptyState: {
@@ -141,7 +158,6 @@ const styles = StyleSheet.create({
     width: 120,
     height: 120,
     borderRadius: 60,
-    backgroundColor: '#F5F5F5',
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 24,
@@ -149,12 +165,10 @@ const styles = StyleSheet.create({
   emptyTitle: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#333',
     marginBottom: 12,
   },
   emptyText: {
     fontSize: 16,
-    color: '#666',
     textAlign: 'center',
     lineHeight: 24,
     marginBottom: 32,
@@ -162,12 +176,10 @@ const styles = StyleSheet.create({
   browseButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#007AFF',
     paddingHorizontal: 28,
     paddingVertical: 16,
     borderRadius: 14,
     gap: 10,
-    shadowColor: '#007AFF',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,

@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, Animated } from 'react-native';
 import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 import { Exercise } from '@/types';
+import { useTheme } from '@/contexts/ThemeContext';
 
 interface ExerciseCardProps {
   exercise: Exercise;
@@ -16,33 +17,55 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
   isFavorite = false,
   onToggleFavorite,
 }) => {
+  const { colors } = useTheme();
   const scaleAnim = React.useRef(new Animated.Value(1)).current;
+  const heartScale = React.useRef(new Animated.Value(1)).current;
 
   const handlePressIn = () => {
     Animated.spring(scaleAnim, {
-      toValue: 0.97,
+      toValue: 0.96,
       useNativeDriver: true,
+      tension: 100,
+      friction: 8,
     }).start();
   };
 
   const handlePressOut = () => {
     Animated.spring(scaleAnim, {
       toValue: 1,
-      friction: 3,
-      tension: 40,
       useNativeDriver: true,
+      tension: 100,
+      friction: 8,
     }).start();
+  };
+
+  const handleFavoritePress = () => {
+    Animated.sequence([
+      Animated.spring(heartScale, {
+        toValue: 1.3,
+        useNativeDriver: true,
+        tension: 150,
+        friction: 3,
+      }),
+      Animated.spring(heartScale, {
+        toValue: 1,
+        useNativeDriver: true,
+        tension: 100,
+        friction: 8,
+      }),
+    ]).start();
+    onToggleFavorite?.();
   };
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty.toLowerCase()) {
       case 'beginner':
-        return '#34C759';
+        return colors.beginner;
       case 'intermediate':
-        return '#FF9500';
+        return colors.intermediate;
       case 'expert':
-        return '#FF3B30';
+        return colors.expert;
       default:
-        return '#666';
+        return colors.textSecondary;
     }
   };
 
@@ -101,7 +124,7 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
   return (
     <Animated.View style={[{ transform: [{ scale: scaleAnim }] }]}>
       <TouchableOpacity 
-        style={styles.card} 
+        style={[styles.card, { backgroundColor: colors.card, shadowColor: colors.shadow, borderColor: colors.border }]} 
         onPress={onPress} 
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}
@@ -120,7 +143,7 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
         {/* Header */}
         <View style={styles.header}>
           <View style={styles.headerLeft}>
-            <Text style={styles.name} numberOfLines={2}>
+            <Text style={[styles.name, { color: colors.text }]} numberOfLines={2}>
               {exercise.name}
             </Text>
             <View style={styles.badges}>
@@ -136,40 +159,41 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
           </View>
           {onToggleFavorite && (
             <TouchableOpacity
-              onPress={onToggleFavorite}
+              onPress={handleFavoritePress}
               style={styles.favoriteButton}
               hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
             >
-              <MaterialCommunityIcons
-                name={isFavorite ? 'heart' : 'heart-outline'}
-                size={26}
-                color={isFavorite ? '#FF3B30' : '#CCC'}
-              />
+              <Animated.View style={{ transform: [{ scale: heartScale }] }}>\n                <MaterialCommunityIcons
+                  name={isFavorite ? 'heart' : 'heart-outline'}
+                  size={26}
+                  color={isFavorite ? colors.error : colors.iconTertiary}
+                />
+              </Animated.View>
             </TouchableOpacity>
           )}
         </View>
 
         {/* Details */}
         <View style={styles.details}>
-          <View style={styles.detailItem}>
-            <Feather name="target" size={16} color="#666" />
-            <Text style={styles.detailText}>{exercise.muscle}</Text>
+          <View style={[styles.detailItem, { backgroundColor: colors.primaryLight }]}>
+            <Feather name="target" size={16} color={colors.textSecondary} />
+            <Text style={[styles.detailText, { color: colors.textSecondary }]}>{exercise.muscle}</Text>
           </View>
-          <View style={styles.detailItem}>
-            <Feather name="activity" size={16} color="#666" />
-            <Text style={styles.detailText}>{exercise.type}</Text>
+          <View style={[styles.detailItem, { backgroundColor: colors.primaryLight }]}>
+            <Feather name="activity" size={16} color={colors.textSecondary} />
+            <Text style={[styles.detailText, { color: colors.textSecondary }]}>{exercise.type}</Text>
           </View>
           {exercise.equipment && (
-            <View style={styles.detailItem}>
-              <Feather name="tool" size={16} color="#666" />
-              <Text style={styles.detailText}>{exercise.equipment}</Text>
+            <View style={[styles.detailItem, { backgroundColor: colors.primaryLight }]}>
+              <Feather name="tool" size={16} color={colors.textSecondary} />
+              <Text style={[styles.detailText, { color: colors.textSecondary }]}>{exercise.equipment}</Text>
             </View>
           )}
         </View>
       </View>
 
       {/* Arrow */}
-      <MaterialCommunityIcons name="chevron-right" size={24} color="#CCC" style={styles.arrow} />
+      <MaterialCommunityIcons name="chevron-right" size={24} color={colors.iconTertiary} style={styles.arrow} />
     </TouchableOpacity>
     </Animated.View>
   );
@@ -177,19 +201,16 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#FFFFFF',
     borderRadius: 18,
     padding: 16,
     marginBottom: 14,
     flexDirection: 'row',
     alignItems: 'center',
-    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.06,
     shadowRadius: 10,
     elevation: 3,
     borderWidth: 1,
-    borderColor: '#F5F5F5',
   },
   imageContainer: {
     width: 70,
@@ -215,7 +236,6 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 17,
     fontWeight: '700',
-    color: '#1A1A1A',
     marginBottom: 8,
     letterSpacing: 0.2,
   },
@@ -248,14 +268,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 5,
-    backgroundColor: '#F5F5F5',
     paddingHorizontal: 10,
     paddingVertical: 6,
     borderRadius: 10,
   },
   detailText: {
     fontSize: 13,
-    color: '#666',
     textTransform: 'capitalize',
     fontWeight: '500',
   },

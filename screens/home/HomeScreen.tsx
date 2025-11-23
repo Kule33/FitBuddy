@@ -9,6 +9,7 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
+  Animated,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -18,12 +19,14 @@ import { toggleFavourite, saveFavourites, loadFavourites } from '@/store/slices/
 import { logoutUser } from '@/store/slices/authSlice';
 import { Exercise } from '@/types';
 import { exerciseService } from '@/services/api';
+import { useTheme } from '@/contexts/ThemeContext';
 
 export default function HomeScreen() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
   const { items: favourites } = useAppSelector((state) => state.favourites);
+  const { colors } = useTheme();
 
   const [exercises, setExercises] = useState<Exercise[]>([]);
   const [filteredExercises, setFilteredExercises] = useState<Exercise[]>([]);
@@ -31,6 +34,8 @@ export default function HomeScreen() {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [error, setError] = useState<string | null>(null);
+  
+  const logoutScale = React.useRef(new Animated.Value(1)).current;
 
   // Load favourites on mount
   useEffect(() => {
@@ -162,18 +167,39 @@ export default function HomeScreen() {
 
   const renderHeader = () => (
     <View style={styles.headerContainer}>
-      <View style={styles.header}>
+      <View style={[styles.header, { backgroundColor: colors.card, shadowColor: colors.shadow }]}>
         <View style={styles.headerLeft}>
-          <View style={styles.avatarCircle}>
+          <View style={[styles.avatarCircle, { backgroundColor: colors.primary, shadowColor: colors.primary }]}>
             <MaterialCommunityIcons name="account" size={24} color="#FFFFFF" />
           </View>
           <View style={styles.headerTextContainer}>
-            <Text style={styles.greeting}>Hello, {user?.name || 'Guest'}! 👋</Text>
-            <Text style={styles.subtitle}>Let&apos;s crush your goals today</Text>
+            <Text style={[styles.greeting, { color: colors.text }]}>Hello, {user?.name || 'Guest'}! 👋</Text>
+            <Text style={[styles.subtitle, { color: colors.textSecondary }]}>Let&apos;s crush your goals today</Text>
           </View>
         </View>
-        <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
-          <MaterialCommunityIcons name="logout" size={22} color="#FFF" />
+        <TouchableOpacity 
+          onPress={handleLogout} 
+          onPressIn={() => {
+            Animated.spring(logoutScale, {
+              toValue: 0.9,
+              useNativeDriver: true,
+              tension: 100,
+              friction: 8,
+            }).start();
+          }}
+          onPressOut={() => {
+            Animated.spring(logoutScale, {
+              toValue: 1,
+              useNativeDriver: true,
+              tension: 100,
+              friction: 8,
+            }).start();
+          }}
+          activeOpacity={1}
+        >
+          <Animated.View style={[styles.logoutButton, { backgroundColor: colors.primary, shadowColor: colors.primary, transform: [{ scale: logoutScale }] }]}>
+            <MaterialCommunityIcons name="logout" size={22} color="#FFF" />
+          </Animated.View>
         </TouchableOpacity>
       </View>
     </View>
@@ -181,18 +207,18 @@ export default function HomeScreen() {
 
   const renderSearchBar = () => (
     <View style={styles.searchWrapper}>
-      <View style={styles.searchContainer}>
-        <MaterialCommunityIcons name="magnify" size={22} color="#999" />
+      <View style={[styles.searchContainer, { backgroundColor: colors.card, borderColor: colors.border, shadowColor: colors.shadow }]}>
+        <MaterialCommunityIcons name="magnify" size={22} color={colors.textTertiary} />
         <TextInput
-          style={styles.searchInput}
+          style={[styles.searchInput, { color: colors.text }]}
           placeholder="Search exercises..."
-          placeholderTextColor="#999"
+          placeholderTextColor={colors.textTertiary}
           value={searchQuery}
           onChangeText={setSearchQuery}
         />
         {searchQuery.length > 0 && (
           <TouchableOpacity onPress={() => setSearchQuery('')}>
-            <MaterialCommunityIcons name="close-circle" size={22} color="#999" />
+            <MaterialCommunityIcons name="close-circle" size={22} color={colors.textTertiary} />
           </TouchableOpacity>
         )}
       </View>
@@ -201,9 +227,9 @@ export default function HomeScreen() {
 
   const renderEmptyState = () => (
     <View style={styles.emptyState}>
-      <MaterialCommunityIcons name="dumbbell" size={64} color="#CCC" />
-      <Text style={styles.emptyStateTitle}>No exercises found</Text>
-      <Text style={styles.emptyStateText}>
+      <MaterialCommunityIcons name="dumbbell" size={64} color={colors.iconTertiary} />
+      <Text style={[styles.emptyStateTitle, { color: colors.text }]}>No exercises found</Text>
+      <Text style={[styles.emptyStateText, { color: colors.textSecondary }]}>
         Try adjusting your search or pull to refresh
       </Text>
     </View>
@@ -211,15 +237,15 @@ export default function HomeScreen() {
 
   if (isLoading) {
     return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#007AFF" />
-        <Text style={styles.loadingText}>Loading exercises...</Text>
+      <View style={[styles.loadingContainer, { backgroundColor: colors.background }]}>
+        <ActivityIndicator size="large" color={colors.primary} />
+        <Text style={[styles.loadingText, { color: colors.textSecondary }]}>Loading exercises...</Text>
       </View>
     );
   }
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
       <FlatList
         data={filteredExercises}
         keyExtractor={(item) => item.id}
@@ -232,10 +258,10 @@ export default function HomeScreen() {
           />
         )}
         ListHeaderComponent={
-          <>
+            <>
             {renderHeader()}
             {renderSearchBar()}
-            <Text style={styles.sectionTitle}>
+            <Text style={[styles.sectionTitle, { color: colors.text }]}>
               Exercises ({filteredExercises.length})
             </Text>
           </>
@@ -247,8 +273,8 @@ export default function HomeScreen() {
           <RefreshControl
             refreshing={isRefreshing}
             onRefresh={handleRefresh}
-            colors={['#007AFF']}
-            tintColor="#007AFF"
+            colors={[colors.primary]}
+            tintColor={colors.primary}
           />
         }
       />
@@ -259,18 +285,15 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8F9FA',
   },
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F8F9FA',
   },
   loadingText: {
     marginTop: 12,
     fontSize: 16,
-    color: '#666',
   },
   listContent: {
     padding: 16,
@@ -288,8 +311,6 @@ const styles = StyleSheet.create({
     padding: 16,
     paddingTop: 50,
     paddingBottom: 24,
-    backgroundColor: '#FFFFFF',
-    shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.06,
     shadowRadius: 12,
@@ -304,11 +325,9 @@ const styles = StyleSheet.create({
     width: 52,
     height: 52,
     borderRadius: 26,
-    backgroundColor: '#007AFF',
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 14,
-    shadowColor: '#007AFF',
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.3,
     shadowRadius: 6,
@@ -320,20 +339,16 @@ const styles = StyleSheet.create({
   greeting: {
     fontSize: 22,
     fontWeight: '700',
-    color: '#1A1A1A',
     marginBottom: 3,
     letterSpacing: -0.3,
   },
   subtitle: {
     fontSize: 14,
-    color: '#666',
     fontWeight: '500',
   },
   logoutButton: {
     padding: 10,
-    backgroundColor: '#007AFF',
     borderRadius: 12,
-    shadowColor: '#007AFF',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 4,
@@ -346,17 +361,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
-    backgroundColor: '#FFFFFF',
     borderRadius: 16,
     paddingHorizontal: 16,
     paddingVertical: 14,
-    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.05,
     shadowRadius: 10,
     elevation: 2,
     borderWidth: 1,
-    borderColor: '#F0F0F0',
   },
   searchIcon: {
     marginRight: 8,
@@ -364,13 +376,11 @@ const styles = StyleSheet.create({
   searchInput: {
     flex: 1,
     fontSize: 16,
-    color: '#333',
     padding: 0,
   },
   sectionTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#333',
     marginBottom: 12,
   },
   emptyState: {
@@ -381,12 +391,10 @@ const styles = StyleSheet.create({
   emptyStateTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#333',
     marginTop: 16,
   },
   emptyStateText: {
     fontSize: 14,
-    color: '#666',
     marginTop: 8,
     textAlign: 'center',
   },

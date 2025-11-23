@@ -1,29 +1,97 @@
 /**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
+ * Theme colors for light and dark mode with consistent color accuracy
  */
 
 import { Platform } from 'react-native';
 
-const tintColorLight = '#0a7ea4';
-const tintColorDark = '#fff';
-
 export const Colors = {
   light: {
-    text: '#11181C',
-    background: '#fff',
-    tint: tintColorLight,
-    icon: '#687076',
-    tabIconDefault: '#687076',
-    tabIconSelected: tintColorLight,
+    // Primary
+    primary: '#007AFF',
+    primaryLight: 'rgba(0, 122, 255, 0.1)',
+    primaryShadow: 'rgba(0, 122, 255, 0.3)',
+    
+    // Background
+    background: '#F8F9FA',
+    card: '#FFFFFF',
+    
+    // Text
+    text: '#1A1A1A',
+    textSecondary: '#666',
+    textTertiary: '#999',
+    
+    // Border
+    border: '#F5F5F5',
+    borderDark: '#E0E0E0',
+    
+    // Status Colors
+    success: '#34C759',
+    warning: '#FF9500',
+    error: '#FF3B30',
+    
+    // Exercise Difficulty
+    beginner: '#34C759',
+    intermediate: '#FF9500',
+    expert: '#FF3B30',
+    
+    // UI Elements
+    shadow: '#000',
+    overlay: 'rgba(0, 0, 0, 0.5)',
+    
+    // Icons
+    iconPrimary: '#007AFF',
+    iconSecondary: '#666',
+    iconTertiary: '#CCC',
+    
+    // Tab Bar
+    tabBackground: '#FFFFFF',
+    tabBorder: '#E0E0E0',
+    tabActive: '#007AFF',
+    tabInactive: '#999',
   },
   dark: {
-    text: '#ECEDEE',
-    background: '#151718',
-    tint: tintColorDark,
-    icon: '#9BA1A6',
-    tabIconDefault: '#9BA1A6',
-    tabIconSelected: tintColorDark,
+    // Primary
+    primary: '#0A84FF',
+    primaryLight: 'rgba(10, 132, 255, 0.15)',
+    primaryShadow: 'rgba(10, 132, 255, 0.4)',
+    
+    // Background
+    background: '#000000',
+    card: '#1C1C1E',
+    
+    // Text
+    text: '#FFFFFF',
+    textSecondary: '#EBEBF5',
+    textTertiary: '#8E8E93',
+    
+    // Border
+    border: '#2C2C2E',
+    borderDark: '#3A3A3C',
+    
+    // Status Colors
+    success: '#30D158',
+    warning: '#FF9F0A',
+    error: '#FF453A',
+    
+    // Exercise Difficulty
+    beginner: '#30D158',
+    intermediate: '#FF9F0A',
+    expert: '#FF453A',
+    
+    // UI Elements
+    shadow: '#000',
+    overlay: 'rgba(0, 0, 0, 0.7)',
+    
+    // Icons
+    iconPrimary: '#0A84FF',
+    iconSecondary: '#EBEBF5',
+    iconTertiary: '#636366',
+    
+    // Tab Bar
+    tabBackground: '#1C1C1E',
+    tabBorder: '#2C2C2E',
+    tabActive: '#0A84FF',
+    tabInactive: '#8E8E93',
   },
 };
 
