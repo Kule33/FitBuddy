@@ -8,7 +8,7 @@ import {
   Alert,
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Feather } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
 import { logoutUser } from '@/store/slices/authSlice';
 import { clearFavourites } from '@/store/slices/favouritesSlice';
@@ -69,7 +69,7 @@ export default function ProfileScreen() {
         <View style={styles.header}>
           <View style={styles.avatarContainer}>
             <View style={styles.avatar}>
-              <Feather name="user" size={48} color="#FFF" />
+              <MaterialCommunityIcons name="account" size={52} color="#FFF" />
             </View>
           </View>
           <Text style={styles.name}>{user?.name || 'Guest'}</Text>
@@ -80,17 +80,17 @@ export default function ProfileScreen() {
       {/* Stats */}
       <View style={styles.statsContainer}>
         <View style={styles.statCard}>
-          <Feather name="heart" size={24} color="#FF3B30" />
+          <MaterialCommunityIcons name="heart" size={28} color="#FF3B30" />
           <Text style={styles.statNumber}>{favourites.length}</Text>
           <Text style={styles.statLabel}>Favourites</Text>
         </View>
         <View style={styles.statCard}>
-          <Feather name="activity" size={24} color="#34C759" />
+          <MaterialCommunityIcons name="dumbbell" size={28} color="#34C759" />
           <Text style={styles.statNumber}>0</Text>
           <Text style={styles.statLabel}>Workouts</Text>
         </View>
         <View style={styles.statCard}>
-          <Feather name="award" size={24} color="#FF9500" />
+          <MaterialCommunityIcons name="trophy" size={28} color="#FF9500" />
           <Text style={styles.statNumber}>0</Text>
           <Text style={styles.statLabel}>Achievements</Text>
         </View>
@@ -105,10 +105,10 @@ export default function ProfileScreen() {
             onPress={() => Alert.alert('Coming Soon', 'Edit profile feature coming soon!')}
           >
             <View style={styles.menuItemLeft}>
-              <Feather name="user" size={20} color="#007AFF" />
+              <MaterialCommunityIcons name="account-edit" size={22} color="#007AFF" />
               <Text style={styles.menuItemText}>Edit Profile</Text>
             </View>
-            <Feather name="chevron-right" size={20} color="#CCC" />
+            <MaterialCommunityIcons name="chevron-right" size={22} color="#CCC" />
           </TouchableOpacity>
 
           <View style={styles.menuDivider} />
@@ -118,10 +118,10 @@ export default function ProfileScreen() {
             onPress={() => Alert.alert('Coming Soon', 'Change password feature coming soon!')}
           >
             <View style={styles.menuItemLeft}>
-              <Feather name="lock" size={20} color="#007AFF" />
+              <MaterialCommunityIcons name="lock" size={22} color="#007AFF" />
               <Text style={styles.menuItemText}>Change Password</Text>
             </View>
-            <Feather name="chevron-right" size={20} color="#CCC" />
+            <MaterialCommunityIcons name="chevron-right" size={22} color="#CCC" />
           </TouchableOpacity>
         </View>
       </View>
@@ -134,10 +134,10 @@ export default function ProfileScreen() {
             onPress={() => Alert.alert('Coming Soon', 'Notifications settings coming soon!')}
           >
             <View style={styles.menuItemLeft}>
-              <Feather name="bell" size={20} color="#007AFF" />
+              <MaterialCommunityIcons name="bell" size={22} color="#007AFF" />
               <Text style={styles.menuItemText}>Notifications</Text>
             </View>
-            <Feather name="chevron-right" size={20} color="#CCC" />
+            <MaterialCommunityIcons name="chevron-right" size={22} color="#CCC" />
           </TouchableOpacity>
 
           <View style={styles.menuDivider} />
@@ -147,10 +147,10 @@ export default function ProfileScreen() {
             onPress={() => Alert.alert('Coming Soon', 'Theme settings coming soon!')}
           >
             <View style={styles.menuItemLeft}>
-              <Feather name="moon" size={20} color="#007AFF" />
+              <MaterialCommunityIcons name="moon-waning-crescent" size={22} color="#007AFF" />
               <Text style={styles.menuItemText}>Dark Mode</Text>
             </View>
-            <Feather name="chevron-right" size={20} color="#CCC" />
+            <MaterialCommunityIcons name="chevron-right" size={22} color="#CCC" />
           </TouchableOpacity>
         </View>
       </View>
@@ -163,12 +163,12 @@ export default function ProfileScreen() {
             onPress={handleClearFavourites}
           >
             <View style={styles.menuItemLeft}>
-              <Feather name="trash-2" size={20} color="#FF3B30" />
+              <MaterialCommunityIcons name="delete" size={22} color="#FF3B30" />
               <Text style={[styles.menuItemText, { color: '#FF3B30' }]}>
                 Clear Favourites
               </Text>
             </View>
-            <Feather name="chevron-right" size={20} color="#CCC" />
+            <MaterialCommunityIcons name="chevron-right" size={22} color="#CCC" />
           </TouchableOpacity>
         </View>
       </View>
@@ -181,10 +181,10 @@ export default function ProfileScreen() {
             onPress={() => Alert.alert('FitBuddy', 'Version 1.0.0\n\nYour fitness companion app.')}
           >
             <View style={styles.menuItemLeft}>
-              <Feather name="info" size={20} color="#007AFF" />
+              <MaterialCommunityIcons name="information" size={22} color="#007AFF" />
               <Text style={styles.menuItemText}>About App</Text>
             </View>
-            <Feather name="chevron-right" size={20} color="#CCC" />
+            <MaterialCommunityIcons name="chevron-right" size={22} color="#CCC" />
           </TouchableOpacity>
 
           <View style={styles.menuDivider} />
@@ -194,17 +194,17 @@ export default function ProfileScreen() {
             onPress={() => Alert.alert('Coming Soon', 'Privacy policy coming soon!')}
           >
             <View style={styles.menuItemLeft}>
-              <Feather name="shield" size={20} color="#007AFF" />
+              <MaterialCommunityIcons name="shield-check" size={22} color="#007AFF" />
               <Text style={styles.menuItemText}>Privacy Policy</Text>
             </View>
-            <Feather name="chevron-right" size={20} color="#CCC" />
+            <MaterialCommunityIcons name="chevron-right" size={22} color="#CCC" />
           </TouchableOpacity>
         </View>
       </View>
 
       {/* Logout Button */}
       <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-        <Feather name="log-out" size={20} color="#FF3B30" />
+        <MaterialCommunityIcons name="logout" size={22} color="#FF3B30" />
         <Text style={styles.logoutText}>Logout</Text>
       </TouchableOpacity>
 
@@ -219,8 +219,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#F8F9FA',
   },
   headerBackground: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#FFFFFF',
     paddingBottom: 30,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.06,
+    shadowRadius: 12,
+    elevation: 4,
   },
   header: {
     alignItems: 'center',
@@ -229,22 +234,22 @@ const styles = StyleSheet.create({
     paddingTop: 50,
   },
   avatarContainer: {
-    marginBottom: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
-    elevation: 5,
+    marginBottom: 18,
+    shadowColor: '#007AFF',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.25,
+    shadowRadius: 10,
+    elevation: 6,
   },
   avatar: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    backgroundColor: 'rgba(255, 255, 255, 0.25)',
+    width: 110,
+    height: 110,
+    borderRadius: 55,
+    backgroundColor: '#007AFF',
     alignItems: 'center',
     justifyContent: 'center',
-    borderWidth: 3,
-    borderColor: 'rgba(255, 255, 255, 0.4)',
+    borderWidth: 4,
+    borderColor: 'rgba(0, 122, 255, 0.2)',
   },
   avatarText: {
     fontSize: 36,
@@ -252,14 +257,16 @@ const styles = StyleSheet.create({
     color: '#FFF',
   },
   name: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
-    marginBottom: 4,
+    fontSize: 26,
+    fontWeight: '700',
+    color: '#1A1A1A',
+    marginBottom: 5,
+    letterSpacing: -0.3,
   },
   email: {
-    fontSize: 16,
-    color: 'rgba(255, 255, 255, 0.9)',
+    fontSize: 15,
+    color: '#666',
+    fontWeight: '500',
   },
   statsContainer: {
     flexDirection: 'row',
@@ -269,11 +276,16 @@ const styles = StyleSheet.create({
   statCard: {
     flex: 1,
     backgroundColor: '#FFF',
-    borderRadius: 12,
-    padding: 16,
+    borderRadius: 16,
+    padding: 18,
     alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
+    elevation: 2,
     borderWidth: 1,
-    borderColor: '#E0E0E0',
+    borderColor: '#F5F5F5',
   },
   statNumber: {
     fontSize: 24,
@@ -300,9 +312,14 @@ const styles = StyleSheet.create({
   },
   menuCard: {
     backgroundColor: '#FFF',
-    borderRadius: 12,
+    borderRadius: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
+    elevation: 2,
     borderWidth: 1,
-    borderColor: '#E0E0E0',
+    borderColor: '#F5F5F5',
   },
   menuItem: {
     flexDirection: 'row',

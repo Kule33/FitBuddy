@@ -11,7 +11,7 @@ import {
   Alert,
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Feather } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { ExerciseCard } from '@/components/ExerciseCard';
 import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
 import { toggleFavourite, saveFavourites, loadFavourites } from '@/store/slices/favouritesSlice';
@@ -165,7 +165,7 @@ export default function HomeScreen() {
       <View style={styles.header}>
         <View style={styles.headerLeft}>
           <View style={styles.avatarCircle}>
-            <Feather name="user" size={22} color="#007AFF" />
+            <MaterialCommunityIcons name="account" size={24} color="#FFFFFF" />
           </View>
           <View style={styles.headerTextContainer}>
             <Text style={styles.greeting}>Hello, {user?.name || 'Guest'}! 👋</Text>
@@ -173,33 +173,35 @@ export default function HomeScreen() {
           </View>
         </View>
         <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
-          <Feather name="log-out" size={20} color="#FFF" />
+          <MaterialCommunityIcons name="logout" size={22} color="#FFF" />
         </TouchableOpacity>
       </View>
     </View>
   );
 
   const renderSearchBar = () => (
-    <View style={styles.searchContainer}>
-      <Feather name="search" size={20} color="#999" style={styles.searchIcon} />
-      <TextInput
-        style={styles.searchInput}
-        placeholder="Search exercises..."
-        placeholderTextColor="#999"
-        value={searchQuery}
-        onChangeText={setSearchQuery}
-      />
-      {searchQuery.length > 0 && (
-        <TouchableOpacity onPress={() => setSearchQuery('')}>
-          <Feather name="x" size={20} color="#999" />
-        </TouchableOpacity>
-      )}
+    <View style={styles.searchWrapper}>
+      <View style={styles.searchContainer}>
+        <MaterialCommunityIcons name="magnify" size={22} color="#999" />
+        <TextInput
+          style={styles.searchInput}
+          placeholder="Search exercises..."
+          placeholderTextColor="#999"
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+        />
+        {searchQuery.length > 0 && (
+          <TouchableOpacity onPress={() => setSearchQuery('')}>
+            <MaterialCommunityIcons name="close-circle" size={22} color="#999" />
+          </TouchableOpacity>
+        )}
+      </View>
     </View>
   );
 
   const renderEmptyState = () => (
     <View style={styles.emptyState}>
-      <Feather name="search" size={64} color="#CCC" />
+      <MaterialCommunityIcons name="dumbbell" size={64} color="#CCC" />
       <Text style={styles.emptyStateTitle}>No exercises found</Text>
       <Text style={styles.emptyStateText}>
         Try adjusting your search or pull to refresh
@@ -272,11 +274,12 @@ const styles = StyleSheet.create({
   },
   listContent: {
     padding: 16,
+    paddingTop: 0,
   },
   headerContainer: {
     marginBottom: 20,
     marginHorizontal: -16,
-    marginTop: -16,
+    marginTop: 0,
   },
   header: {
     flexDirection: 'row',
@@ -284,10 +287,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 16,
     paddingTop: 50,
-    paddingBottom: 20,
-    backgroundColor: '#007AFF',
-    borderBottomWidth: 1,
-    borderBottomColor: '#0051D5',
+    paddingBottom: 24,
+    backgroundColor: '#FFFFFF',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.06,
+    shadowRadius: 12,
+    elevation: 4,
   },
   headerLeft: {
     flexDirection: 'row',
@@ -295,50 +301,71 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   avatarCircle: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    backgroundColor: '#FFFFFF',
+    width: 52,
+    height: 52,
+    borderRadius: 26,
+    backgroundColor: '#007AFF',
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 12,
+    marginRight: 14,
+    shadowColor: '#007AFF',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 5,
   },
   headerTextContainer: {
     flex: 1,
   },
   greeting: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: '700',
-    color: '#FFFFFF',
-    marginBottom: 2,
+    color: '#1A1A1A',
+    marginBottom: 3,
+    letterSpacing: -0.3,
   },
   subtitle: {
-    fontSize: 13,
-    color: 'rgba(255, 255, 255, 0.9)',
+    fontSize: 14,
+    color: '#666',
+    fontWeight: '500',
   },
   logoutButton: {
-    padding: 8,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    borderRadius: 8,
+    padding: 10,
+    backgroundColor: '#007AFF',
+    borderRadius: 12,
+    shadowColor: '#007AFF',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  searchWrapper: {
+    marginBottom: 24,
   },
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#FFF',
-    borderRadius: 12,
-    paddingHorizontal: 12,
-    marginBottom: 20,
+    gap: 10,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 10,
+    elevation: 2,
     borderWidth: 1,
-    borderColor: '#E0E0E0',
+    borderColor: '#F0F0F0',
   },
   searchIcon: {
     marginRight: 8,
   },
   searchInput: {
     flex: 1,
-    paddingVertical: 12,
     fontSize: 16,
     color: '#333',
+    padding: 0,
   },
   sectionTitle: {
     fontSize: 18,

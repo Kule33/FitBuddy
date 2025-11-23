@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Feather } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { ExerciseCard } from '@/components/ExerciseCard';
 import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
 import { toggleFavourite, saveFavourites, loadFavourites } from '@/store/slices/favouritesSlice';
@@ -54,7 +54,7 @@ export default function FavouritesScreen() {
   const renderEmptyState = () => (
     <View style={styles.emptyState}>
       <View style={styles.emptyIconContainer}>
-        <Feather name="heart" size={64} color="#E0E0E0" />
+        <MaterialCommunityIcons name="heart-outline" size={64} color="#E0E0E0" />
       </View>
       <Text style={styles.emptyTitle}>No Favourites Yet</Text>
       <Text style={styles.emptyText}>
@@ -64,7 +64,7 @@ export default function FavouritesScreen() {
         style={styles.browseButton}
         onPress={handleBrowseExercises}
       >
-        <Feather name="search" size={20} color="#FFF" />
+        <MaterialCommunityIcons name="dumbbell" size={22} color="#FFF" />
         <Text style={styles.browseButtonText}>Browse Exercises</Text>
       </TouchableOpacity>
     </View>
@@ -105,26 +105,30 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     marginHorizontal: -16,
     marginTop: -16,
-    backgroundColor: '#007AFF',
+    backgroundColor: '#FFFFFF',
     padding: 16,
     paddingTop: 50,
-    paddingBottom: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: '#0051D5',
+    paddingBottom: 24,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.06,
+    shadowRadius: 12,
+    elevation: 4,
   },
   headerSection: {
     flexDirection: 'column',
   },
   title: {
-    fontSize: 28,
+    fontSize: 30,
     fontWeight: '700',
-    color: '#FFFFFF',
-    marginBottom: 4,
-    letterSpacing: 0.3,
+    color: '#1A1A1A',
+    marginBottom: 5,
+    letterSpacing: -0.5,
   },
   subtitle: {
-    fontSize: 14,
-    color: 'rgba(255, 255, 255, 0.9)',
+    fontSize: 15,
+    color: '#666',
+    fontWeight: '500',
   },
   emptyState: {
     flex: 1,
@@ -159,10 +163,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#007AFF',
-    paddingHorizontal: 24,
-    paddingVertical: 14,
-    borderRadius: 12,
-    gap: 8,
+    paddingHorizontal: 28,
+    paddingVertical: 16,
+    borderRadius: 14,
+    gap: 10,
+    shadowColor: '#007AFF',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 4,
   },
   browseButtonText: {
     fontSize: 16,
