@@ -173,7 +173,9 @@ export default function HomeScreen() {
             <MaterialCommunityIcons name="account" size={24} color="#FFFFFF" />
           </View>
           <View style={styles.headerTextContainer}>
-            <Text style={[styles.greeting, { color: colors.text }]}>Hello, {user?.name?.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ') || 'Guest'}! 👋</Text>
+            <Text style={[styles.greeting, { color: colors.text }]}>
+              Hello, {user?.name ? user.name.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ') : 'Guest'}! 👋
+            </Text>
             <Text style={[styles.subtitle, { color: colors.textSecondary }]}>Let&apos;s crush your goals today</Text>
           </View>
         </View>
