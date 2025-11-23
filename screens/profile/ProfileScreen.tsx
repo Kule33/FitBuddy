@@ -79,7 +79,7 @@ export default function ProfileScreen() {
               <MaterialCommunityIcons name="account" size={52} color="#FFF" />
             </View>
           </View>
-          <Text style={[styles.name, { color: colors.text }]}>{user?.name || 'Guest'}</Text>
+          <Text style={[styles.name, { color: colors.text }]}>{user?.name?.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ') || 'Guest'}</Text>
           <Text style={[styles.email, { color: colors.textSecondary }]}>{user?.email || 'No email'}</Text>
         </View>
       </View>
